@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find panda_moveit_config)/launch/demo.launch" />
+  <include file="$(find panda_moveit_config_setup)/launch/demo.launch" />
   <!--
   In this tutorial we wait much longer for the robot transforms than we usually would,
   because the user's machine might be quite slow.
