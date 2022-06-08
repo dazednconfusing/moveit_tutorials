@@ -53,7 +53,7 @@ class CylinderSegment
 
 public:
   CylinderSegment()
-    : cloud_subscriber_(nh_.subscribe("/camera/depth_registered/points", 1, &CylinderSegment::cloudCB, this))
+    : cloud_subscriber_(nh_.subscribe("/camera/depth/color/points", 1, &CylinderSegment::cloudCB, this))
   {
   }
 
@@ -66,7 +66,7 @@ public:
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     // Define a collision object ROS message.
     moveit_msgs::CollisionObject collision_object;
-    collision_object.header.frame_id = "camera_rgb_optical_frame";
+    collision_object.header.frame_id = "locobot_camera_optical_link";
     collision_object.id = "cylinder";
 
     // Define a cylinder which will be added to the world.
