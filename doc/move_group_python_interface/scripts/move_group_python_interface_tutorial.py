@@ -229,11 +229,12 @@ class MoveGroupPythonInterfaceTutorial(object):
         move_group.set_pose_target(pose_goal)
 
         ## Now, we call the planner to compute the plan and execute it.
-        plan = move_group.go(wait=True)
+        # `go()` returns a boolean indicating whether the planning and execution was successful.
+        success = move_group.go(wait=True)
         # Calling `stop()` ensures that there is no residual movement
         move_group.stop()
         # It is always good to clear your targets after planning with poses.
-        # Note: there is no equivalent function for clear_joint_value_targets()
+        # Note: there is no equivalent function for clear_joint_value_targets().
         move_group.clear_pose_targets()
 
         ## END_SUB_TUTORIAL
@@ -342,13 +343,16 @@ class MoveGroupPythonInterfaceTutorial(object):
         ##
         ## Ensuring Collision Updates Are Received
         ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ## If the Python node dies before publishing a collision object update message, the message
+        ## If the Python node was just created (https://github.com/ros/ros_comm/issues/176),
+        ## or dies before actually publishing the scene update message, the message
         ## could get lost and the box will not appear. To ensure that the updates are
         ## made, we wait until we see the changes reflected in the
         ## ``get_attached_objects()`` and ``get_known_object_names()`` lists.
         ## For the purpose of this tutorial, we call this function after adding,
         ## removing, attaching or detaching an object in the planning scene. We then wait
-        ## until the updates have been made or ``timeout`` seconds have passed
+        ## until the updates have been made or ``timeout`` seconds have passed.
+        ## To avoid waiting for scene updates like this at all, initialize the
+        ## planning scene interface with  ``synchronous = True``.
         start = rospy.get_time()
         seconds = rospy.get_time()
         while (seconds - start < timeout) and not rospy.is_shutdown():
@@ -417,7 +421,7 @@ class MoveGroupPythonInterfaceTutorial(object):
         ## planning scene to ignore collisions between those links and the box. For the Panda
         ## robot, we set ``grasping_group = 'hand'``. If you are using a different robot,
         ## you should change this value to the name of your end effector group name.
-        grasping_group = "hand"
+        grasping_group = "panda_hand"
         touch_links = robot.get_link_names(group=grasping_group)
         scene.attach_box(eef_link, box_name, touch_links=touch_links)
         ## END_SUB_TUTORIAL

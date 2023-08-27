@@ -98,7 +98,7 @@ VisibilityConstraint
 
 A ``VisibilityConstraint`` allows to eg. specify a camera should always be able to see the gripper.
 
-How this is achieved is best explained by the `VisibilityConstraint <https://docs.ros.org/noetic/api/moveit_core/html/cpp/classkinematic__constraints_1_1VisibilityConstraint.html#details>`_ class documentation.
+How this is achieved is best explained by the `VisibilityConstraint <https://docs.ros.org/noetic/api/moveit_core/html/classkinematic__constraints_1_1VisibilityConstraint.html#details>`_ class documentation.
 
 Such a constraint is compactly defined like this::
 
@@ -195,7 +195,7 @@ Database Loading and Usage
 --------------------------
 The constraints database must be loaded at launch of the move group node by setting the ros parameter::
 
- <param name="move_group/constraint_approximations_path" value="<path_to_database>"/>
+ <param name="move_group/planning_pipelines/ompl/constraint_approximations_path" value="<path_to_database>"/>
 
 To verify if the database was found an successfully loaded check if the named constraint is shown in the log.
 

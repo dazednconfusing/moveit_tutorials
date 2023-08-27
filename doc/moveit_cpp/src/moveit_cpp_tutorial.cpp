@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   ROS_INFO_STREAM_NAMED(LOGNAME, "Starting MoveIt Tutorials...");
 
   auto moveit_cpp_ptr = std::make_shared<moveit_cpp::MoveItCpp>(nh);
-  moveit_cpp_ptr->getPlanningSceneMonitor()->providePlanningSceneService();
+  moveit_cpp_ptr->getPlanningSceneMonitorNonConst()->providePlanningSceneService();
 
   auto planning_components = std::make_shared<moveit_cpp::PlanningComponent>(PLANNING_GROUP, moveit_cpp_ptr);
   auto robot_model_ptr = moveit_cpp_ptr->getRobotModel();
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
   // The package MoveItVisualTools provides many capabilities for visualizing objects, robots,
   // and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
   moveit_visual_tools::MoveItVisualTools visual_tools("panda_link0", rvt::RVIZ_MARKER_TOPIC,
-                                                      moveit_cpp_ptr->getPlanningSceneMonitor());
+                                                      moveit_cpp_ptr->getPlanningSceneMonitorNonConst());
   visual_tools.deleteAllMarkers();
   visual_tools.loadRemoteControl();
 
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
     visual_tools.publishAxisLabeled(target_pose1.pose, "target_pose");
     visual_tools.publishText(text_pose, "Goal Pose", rvt::WHITE, rvt::XLARGE);
     // Visualize the trajectory in Rviz
-    visual_tools.publishTrajectoryLine(plan_solution1.trajectory, joint_model_group_ptr);
+    visual_tools.publishTrajectoryLine(plan_solution1.trajectory_, joint_model_group_ptr);
     visual_tools.trigger();
 
     /* Uncomment if you want to execute the plan */
@@ -131,13 +131,13 @@ int main(int argc, char** argv)
   if (plan_solution2)
   {
     moveit::core::RobotState robot_state(robot_model_ptr);
-    moveit::core::robotStateMsgToRobotState(plan_solution2.start_state, robot_state);
+    moveit::core::robotStateMsgToRobotState(plan_solution2.start_state_, robot_state);
 
     visual_tools.publishText(text_pose, "Start Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(robot_state.getGlobalLinkTransform("panda_link8"), "start_pose");
     visual_tools.publishText(text_pose, "Goal Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(target_pose1.pose, "target_pose");
-    visual_tools.publishTrajectoryLine(plan_solution2.trajectory, joint_model_group_ptr);
+    visual_tools.publishTrajectoryLine(plan_solution2.trajectory_, joint_model_group_ptr);
     visual_tools.trigger();
 
     /* Uncomment if you want to execute the plan */
@@ -176,13 +176,13 @@ int main(int argc, char** argv)
   if (plan_solution3)
   {
     moveit::core::RobotState robot_state(robot_model_ptr);
-    moveit::core::robotStateMsgToRobotState(plan_solution3.start_state, robot_state);
+    moveit::core::robotStateMsgToRobotState(plan_solution3.start_state_, robot_state);
 
     visual_tools.publishText(text_pose, "Start Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(robot_state.getGlobalLinkTransform("panda_link8"), "start_pose");
     visual_tools.publishText(text_pose, "Goal Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(target_pose2, "target_pose");
-    visual_tools.publishTrajectoryLine(plan_solution3.trajectory, joint_model_group_ptr);
+    visual_tools.publishTrajectoryLine(plan_solution3.trajectory_, joint_model_group_ptr);
     visual_tools.trigger();
 
     /* Uncomment if you want to execute the plan */
@@ -207,7 +207,7 @@ int main(int argc, char** argv)
   // We can set the goal of the plan using the name of a group states
   // for panda robot we have one named robot state for "panda_arm" planning group called "ready"
   // see `panda_arm.xacro
-  // <https://github.com/ros-planning/panda_moveit_config/blob/melodic-devel/config/panda_arm.xacro#L13>`_
+  // <https://github.com/ros-planning/panda_moveit_config/blob/noetic-devel/config/arm.xacro#L13>`_
 
   /* // Set the start state of the plan from a named robot state */
   /* planning_components->setStartState("ready"); // Not implemented yet */
@@ -219,13 +219,13 @@ int main(int argc, char** argv)
   if (plan_solution4)
   {
     moveit::core::RobotState robot_state(robot_model_ptr);
-    moveit::core::robotStateMsgToRobotState(plan_solution4.start_state, robot_state);
+    moveit::core::robotStateMsgToRobotState(plan_solution4.start_state_, robot_state);
 
     visual_tools.publishText(text_pose, "Start Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(robot_state.getGlobalLinkTransform("panda_link8"), "start_pose");
     visual_tools.publishText(text_pose, "Goal Pose", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishAxisLabeled(robot_start_state->getGlobalLinkTransform("panda_link8"), "target_pose");
-    visual_tools.publishTrajectoryLine(plan_solution4.trajectory, joint_model_group_ptr);
+    visual_tools.publishTrajectoryLine(plan_solution4.trajectory_, joint_model_group_ptr);
     visual_tools.trigger();
 
     /* Uncomment if you want to execute the plan */

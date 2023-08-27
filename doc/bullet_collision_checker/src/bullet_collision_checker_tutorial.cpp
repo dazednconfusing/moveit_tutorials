@@ -114,7 +114,7 @@ void computeCollisionContactPoints(InteractiveRobot& robot)
 
   if (c_res.collision)
   {
-    ROS_INFO("COLLIDING contact_point_count=%d", (int)c_res.contact_count);
+    ROS_INFO_STREAM("COLLIDING contact_point_count=" << c_res.contact_count);
     if (c_res.contact_count > 0)
     {
       std_msgs::ColorRGBA color;
@@ -256,7 +256,7 @@ int main(int argc, char** argv)
   marker_publisher.publish(marker_delete);
 
   visualization_msgs::Marker marker;
-  marker.header.frame_id = "/panda_link0";
+  marker.header.frame_id = "panda_link0";
   marker.header.stamp = ros::Time::now();
   marker.ns = "world_cube";
   marker.id = 0;
